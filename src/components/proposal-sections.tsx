@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+import Image from "next/image";
 import {
   COMPANY,
   METHODOLOGY,
@@ -20,181 +22,253 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const t = totals();
 
+const TOC = [
+  { href: "#summary", label: "Executive summary" },
+  { href: "#scope", label: "Scope of work" },
+  { href: "#map", label: "Work map" },
+  { href: "#pricing", label: "Investment" },
+  { href: "#methodology", label: "Measurement" },
+  { href: "#schedule", label: "Field plan" },
+  { href: "#terms", label: "Notes" },
+] as const;
+
 export function ProposalDocument() {
   return (
-    <div className="bg-[#eef3ef]">
-      <Hero />
-      <main className="mx-auto max-w-5xl px-4 pb-24 sm:px-6">
-        <ScopeSection />
-        <MapSection />
-        <PricingSection />
-        <MethodologySection />
-        <ScheduleSection />
-        <TermsSection />
-      </main>
+    <div className="min-h-screen bg-[#f4f7fb] text-[#0f172a]">
+      <Cover />
+      <div className="mx-auto flex max-w-6xl gap-10 px-4 pb-24 pt-10 sm:px-6 lg:px-8">
+        <aside className="toc-sidebar sticky top-8 hidden h-fit w-48 shrink-0 lg:block">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#64748b]">
+            Contents
+          </p>
+          <nav className="mt-3 flex flex-col gap-1.5 border-l border-[#d0dceb] pl-3">
+            {TOC.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm text-[#475569] transition hover:text-[#1a6fc4]"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+          <div className="mt-8 rounded-lg border border-[#d0dceb] bg-white p-3">
+            <p className="text-[10px] uppercase tracking-wider text-[#94a3b8]">
+              Contact
+            </p>
+            <a
+              href={`tel:${COMPANY.phone.replace(/\./g, "")}`}
+              className="mt-1 block text-sm font-medium text-[#1a6fc4]"
+            >
+              {COMPANY.phone}
+            </a>
+            <a
+              href={`mailto:${COMPANY.email}`}
+              className="mt-0.5 block break-all text-xs text-[#64748b]"
+            >
+              {COMPANY.email}
+            </a>
+          </div>
+        </aside>
+
+        <main className="min-w-0 flex-1 space-y-16 sm:space-y-20">
+          <SummarySection />
+          <ScopeSection />
+          <MapSection />
+          <PricingSection />
+          <MethodologySection />
+          <ScheduleSection />
+          <TermsSection />
+        </main>
+      </div>
       <Footer />
     </div>
   );
 }
 
-function Hero() {
+function Cover() {
   return (
-    <header className="relative min-h-[100svh] overflow-hidden">
-      {/* Atmospheric field — Lowcountry marsh / pine, not flat white */}
+    <header className="relative overflow-hidden border-b border-[#c5d4e8] bg-[#0a1628]">
       <div
-        className="absolute inset-0"
+        className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           background: `
-            radial-gradient(ellipse 80% 60% at 70% 40%, rgba(45, 110, 90, 0.35), transparent 55%),
-            radial-gradient(ellipse 50% 40% at 20% 80%, rgba(196, 95, 26, 0.12), transparent 50%),
-            linear-gradient(165deg, #0a221c 0%, #143d32 42%, #1a4f42 70%, #0f2e24 100%)
+            radial-gradient(ellipse 70% 50% at 80% 20%, rgba(32, 128, 224, 0.45), transparent 55%),
+            radial-gradient(ellipse 50% 40% at 10% 90%, rgba(32, 112, 208, 0.25), transparent 50%)
           `,
         }}
       />
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.14]"
+        className="pointer-events-none absolute inset-0 opacity-[0.08]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30h60M30 0v60' stroke='%23ffffff' stroke-width='0.4' fill='none'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 24h48M24 0v48' stroke='%23ffffff' stroke-width='0.5' fill='none'/%3E%3C/svg%3E")`,
         }}
       />
 
-      {/* Dominant map plane — edge to edge under content */}
-      <div className="animate-map-reveal absolute inset-x-0 bottom-0 top-[28%] opacity-40 sm:top-[22%] sm:opacity-50">
-        <div className="mx-auto h-full max-w-6xl px-2">
-          <MiniMapBackdrop />
-        </div>
-      </div>
-
-      <div className="relative z-10 flex min-h-[100svh] flex-col justify-between px-4 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10">
+      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-6xl flex-col justify-between px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <div className="animate-rise flex items-start justify-between gap-4">
-          <p className="font-display text-2xl tracking-tight text-[#e8f2ec] sm:text-3xl md:text-4xl">
-            Carolina Sweep
-            <span className="block text-lg font-normal tracking-wide text-[#9ec9b8] sm:text-xl">
-              Environmental
-            </span>
-          </p>
-          <p className="max-w-[10rem] text-right text-[11px] leading-snug text-[#8fb5a6] sm:max-w-none sm:text-xs">
-            Proposal {COMPANY.proposalId}
-            <br />
-            {COMPANY.validThrough}
-          </p>
+          <Image
+            src="/brand/logo-mark.png"
+            alt="Clean Sweep Environmental"
+            width={220}
+            height={144}
+            className="h-14 w-auto sm:h-20"
+            priority
+          />
+          <div className="text-right text-[11px] leading-relaxed text-[#8ba3c4] sm:text-xs">
+            <p>Proposal {COMPANY.proposalId}</p>
+            <p>Valid through {COMPANY.validThrough}</p>
+          </div>
         </div>
 
-        <div className="animate-rise-delay max-w-2xl pt-16 sm:pt-8">
-          <h1 className="font-display text-3xl leading-[1.1] text-[#f2faf6] sm:text-5xl md:text-[3.25rem]">
-            Street sweep for Sun City — south of 278
+        <div className="animate-rise-delay max-w-2xl pb-6 pt-20 sm:pt-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6eb0f0]">
+            Street sweeping proposal
+          </p>
+          <h1 className="mt-3 font-display text-3xl leading-[1.12] tracking-tight text-white sm:text-5xl md:text-[3.15rem]">
+            Sun City Hilton Head — south of Highway 278
           </h1>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-[#b5d4c6] sm:text-lg">
-            One complete pass across every association street beneath Highway
-            278, priced by neighborhood cluster and golf corridor from the
-            community map.
+          <p className="mt-4 max-w-lg text-base leading-relaxed text-[#b6c9e0] sm:text-lg">
+            A complete dual-gutter street sweep of association roads beneath
+            Fording Island Rd, mapped and priced by neighborhood and golf
+            corridor from the community plan.
           </p>
           <div className="animate-rise-delay-2 mt-8 flex flex-wrap gap-3">
             <a
               href="#pricing"
-              className="inline-flex h-11 items-center justify-center rounded-md bg-[#c5d94e] px-6 text-sm font-semibold text-[#0f2e24] transition hover:bg-[#d4e66a]"
+              className="inline-flex h-11 items-center justify-center rounded-md bg-[#2080e0] px-6 text-sm font-semibold text-white transition hover:bg-[#3b92ea]"
             >
               View investment — {formatUsd(t.grandTotal)}
             </a>
             <a
               href="#map"
-              className="inline-flex h-11 items-center justify-center rounded-md border border-[#6a9a88]/60 bg-transparent px-6 text-sm font-medium text-[#e8f2ec] transition hover:border-[#9ec9b8] hover:bg-white/5"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-[#4a6a90] bg-transparent px-6 text-sm font-medium text-[#e2eaf4] transition hover:border-[#6eb0f0] hover:bg-white/5"
             >
               Open work map
             </a>
           </div>
         </div>
+
+        <p className="animate-rise-delay-2 text-xs text-[#7a93b0]">
+          Prepared for {COMPANY.preparedFor} · {COMPANY.location}
+        </p>
       </div>
     </header>
   );
 }
 
-function MiniMapBackdrop() {
+function SummarySection() {
   return (
-    <svg viewBox="0 0 900 500" className="h-full w-full" aria-hidden>
-      <path
-        className="animate-boundary"
-        d="M80 40 C200 20, 500 25, 720 60 C800 120, 820 280, 760 400 C650 480, 300 490, 120 420 C40 340, 30 140, 80 40 Z"
-        fill="none"
-        stroke="#c5d94e"
-        strokeWidth="2"
-        strokeDasharray="6 4"
-        opacity="0.7"
-      />
-      <path d="M0 50 L900 58" stroke="#9aa3ab" strokeWidth="10" opacity="0.5" />
-      <ellipse cx="400" cy="280" rx="90" ry="70" fill="#5a8f3c" opacity="0.35" />
-      <rect x="140" y="100" width="120" height="160" rx="8" fill="#0d7a6f" opacity="0.4" />
-      <rect x="280" y="90" width="140" height="180" rx="8" fill="#1a8f82" opacity="0.4" />
-      <rect x="450" y="100" width="130" height="150" rx="8" fill="#0e6b8a" opacity="0.4" />
-      <rect x="520" y="320" width="140" height="100" rx="8" fill="#2b6e9e" opacity="0.4" />
-      <path d="M320 60 L340 420" stroke="#c45f1a" strokeWidth="5" opacity="0.6" />
-    </svg>
+    <section className="scroll-mt-10" id="summary">
+      <SectionEyebrow>Executive summary</SectionEyebrow>
+      <h2 className="mt-2 font-display text-3xl text-[#0a1628] sm:text-4xl">
+        One sweep. Six zones. Clear numbers.
+      </h2>
+      <p className="mt-4 max-w-2xl text-[#475569]">{COMPANY.about}</p>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <MetricCard label="Centerline miles" value={formatMiles(t.centerlineMiles)} />
+        <MetricCard label="Linear feet" value={formatFeet(t.linearFeet)} />
+        <MetricCard label="Curb miles" value={t.curbMiles.toFixed(1)} />
+        <MetricCard label="Proposed total" value={formatUsd(t.grandTotal)} highlight />
+      </div>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <InfoCard
+          title="Boundary"
+          body="Association streets inside the orange community line, south of Hwy 278 only. Highways 278 and 170 excluded."
+        />
+        <InfoCard
+          title="Method"
+          body={`Scale bar ${METHODOLOGY.scaleBarFeet.toLocaleString()} ft + published ~${METHODOLOGY.communityRoadMilesPublished}-mile road inventory, apportioned south of 278.`}
+        />
+        <InfoCard
+          title="Delivery"
+          body="Three field days by zone sequence, with debris haul-off and a photo log at completion."
+        />
+      </div>
+    </section>
+  );
+}
+
+function MetricCard({
+  label,
+  value,
+  highlight,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}) {
+  return (
+    <Card
+      className={
+        highlight
+          ? "border-[#1a6fc4] bg-[#1a6fc4] text-white shadow-none"
+          : "border-[#d0dceb] bg-white shadow-none"
+      }
+    >
+      <CardHeader className="pb-2 pt-4">
+        <CardTitle
+          className={`text-[11px] font-semibold uppercase tracking-wider ${highlight ? "text-[#c5ddf8]" : "text-[#64748b]"}`}
+        >
+          {label}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="pb-4">
+        <p
+          className={`font-display text-2xl tabular-nums ${highlight ? "text-white" : "text-[#0a1628]"}`}
+        >
+          {value}
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+function InfoCard({ title, body }: { title: string; body: string }) {
+  return (
+    <Card className="border-[#d0dceb] bg-white shadow-none">
+      <CardHeader className="pb-2 pt-4">
+        <CardTitle className="font-display text-lg text-[#0a1628]">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="pb-4 text-sm leading-relaxed text-[#475569]">
+        {body}
+      </CardContent>
+    </Card>
   );
 }
 
 function ScopeSection() {
   return (
-    <section className="scroll-mt-8 py-16 sm:py-20" id="scope">
-      <dl className="mb-14 grid grid-cols-2 gap-4 border-b border-[#c5d4cc] pb-10 sm:grid-cols-4">
-        <div>
-          <dt className="text-[11px] uppercase tracking-wider text-[#5a7a6c]">
-            Centerline miles
-          </dt>
-          <dd className="mt-1 font-display text-2xl tabular-nums text-[#0f2e24]">
-            {formatMiles(t.centerlineMiles)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-[11px] uppercase tracking-wider text-[#5a7a6c]">
-            Linear feet
-          </dt>
-          <dd className="mt-1 font-display text-2xl tabular-nums text-[#0f2e24]">
-            {formatFeet(t.linearFeet)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-[11px] uppercase tracking-wider text-[#5a7a6c]">
-            Curb miles
-          </dt>
-          <dd className="mt-1 font-display text-2xl tabular-nums text-[#0f2e24]">
-            {t.curbMiles.toFixed(1)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-[11px] uppercase tracking-wider text-[#5a7a6c]">
-            Work zones
-          </dt>
-          <dd className="mt-1 font-display text-2xl tabular-nums text-[#0f2e24]">
-            {ZONES.length}
-          </dd>
-        </div>
-      </dl>
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5a7a6c]">
-        Scope of work
-      </p>
-      <h2 className="mt-2 font-display text-3xl text-[#0f2e24] sm:text-4xl">
-        Entire Sun City street network south of Highway 278
+    <section className="scroll-mt-10" id="scope">
+      <SectionEyebrow>Scope of work</SectionEyebrow>
+      <h2 className="mt-2 font-display text-3xl text-[#0a1628] sm:text-4xl">
+        What CSE will sweep
       </h2>
-      <p className="mt-4 max-w-2xl text-[#3d5248]">
-        Prepared for {COMPANY.preparedFor}. Work is limited to association-maintained
-        streets inside the community boundary (orange dotted line on the source
-        Google Maps view), excluding state highways 278 and 170 and all streets
-        north of 278.
+      <p className="mt-3 max-w-2xl text-[#475569]">
+        Mechanical / regenerative-air sweep of both gutters on every listed
+        centerline mile, coordinated with association gate access.
       </p>
-      <ul className="mt-8 space-y-3 text-[#2a3d34]">
+      <ul className="mt-8 grid gap-3 sm:grid-cols-2">
         {[
-          "Mechanical / regenerative-air sweep of both gutters on every listed centerline mile",
           "Neighborhood courts, cul-de-sacs, and loops in residential (white-block) zones",
-          "Collector roads through golf and wooded (green) corridors, including Hidden Cypress access streets",
+          "Collector roads through golf and wooded (green) corridors around Hidden Cypress",
           "Primary spines: Sun City Blvd and Del Webb Blvd within the south-of-278 boundary",
           "Haul-off and lawful disposal of collected debris; post-sweep photo log by zone",
         ].map((item) => (
-          <li key={item} className="flex gap-3 text-sm sm:text-base">
+          <li
+            key={item}
+            className="flex gap-3 rounded-lg border border-[#d0dceb] bg-white p-4 text-sm text-[#334155]"
+          >
             <span
-              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d7a6f]"
+              className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2080e0]"
               aria-hidden
             />
             <span>{item}</span>
@@ -207,59 +281,59 @@ function ScopeSection() {
 
 function MapSection() {
   return (
-    <section className="scroll-mt-8 py-8 sm:py-12" id="map">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5a7a6c]">
-        Work map
-      </p>
-      <h2 className="mt-2 font-display text-3xl text-[#0f2e24] sm:text-4xl">
+    <section className="scroll-mt-10" id="map">
+      <SectionEyebrow>Work map</SectionEyebrow>
+      <h2 className="mt-2 font-display text-3xl text-[#0a1628] sm:text-4xl">
         Proposed sweep areas
       </h2>
-      <p className="mt-3 max-w-2xl text-[#3d5248]">
-        Repurposed from the Sun City Hilton Head community map. Letter zones match
-        the pricing table. Green fills mark golf / wooded corridors; teal and blue
-        mark dense residential street fabric; orange marks primary collectors.
+      <p className="mt-3 max-w-2xl text-[#475569]">
+        Repurposed from the Sun City Hilton Head community map. Letter zones
+        match the pricing table. Green fills mark golf / wooded corridors; blues
+        mark dense residential fabric; orange marks primary collectors.
       </p>
-      <div className="mt-8 overflow-hidden rounded-lg border border-[#c5d4cc] bg-[#f7faf7] p-2 sm:p-4">
+      <Card className="mt-8 overflow-hidden border-[#d0dceb] bg-white p-2 shadow-none sm:p-4">
         <WorkMap />
+      </Card>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {ZONES.map((z) => (
+          <div
+            key={z.id}
+            className="flex items-start gap-3 rounded-lg border border-[#d0dceb] bg-white px-3 py-3"
+          >
+            <span
+              className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-xs font-bold text-white"
+              style={{ backgroundColor: z.color }}
+            >
+              {z.shortLabel.replace("Zone ", "")}
+            </span>
+            <div>
+              <p className="text-sm font-medium text-[#0a1628]">{z.name}</p>
+              <p className="text-xs text-[#64748b]">
+                {z.centerlineMiles.toFixed(1)} mi · {formatUsd(zoneCost(z))}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
-      <Legend />
     </section>
-  );
-}
-
-function Legend() {
-  return (
-    <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#3d5248]">
-      {ZONES.map((z) => (
-        <li key={z.id} className="flex items-center gap-2">
-          <span
-            className="h-3 w-3 rounded-sm"
-            style={{ backgroundColor: z.color }}
-          />
-          {z.shortLabel} · {z.name}
-        </li>
-      ))}
-    </ul>
   );
 }
 
 function PricingSection() {
   return (
-    <section className="scroll-mt-8 py-16 sm:py-20" id="pricing">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5a7a6c]">
-        Investment
-      </p>
-      <h2 className="mt-2 font-display text-3xl text-[#0f2e24] sm:text-4xl">
+    <section className="scroll-mt-10" id="pricing">
+      <SectionEyebrow>Investment</SectionEyebrow>
+      <h2 className="mt-2 font-display text-3xl text-[#0a1628] sm:text-4xl">
         Cost by work area
       </h2>
-      <p className="mt-3 max-w-2xl text-[#3d5248]">
-        Residential zones at {formatUsd(RATES.residential)}/centerline mile · golf
+      <p className="mt-3 max-w-2xl text-[#475569]">
+        Residential at {formatUsd(RATES.residential)}/centerline mile · golf
         corridor at {formatUsd(RATES.golf)}/mi · primary collectors at{" "}
         {formatUsd(RATES.arterial)}/mi. Each mile includes both gutters in one
         continuous pass.
       </p>
 
-      <div className="mt-8 overflow-x-auto rounded-lg border border-[#c5d4cc] bg-white">
+      <Card className="mt-8 overflow-hidden border-[#d0dceb] bg-white shadow-none">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -280,7 +354,7 @@ function PricingSection() {
                     style={{ backgroundColor: z.color }}
                   />
                   <span className="font-medium">{z.shortLabel}</span>
-                  <span className="mt-0.5 block text-xs text-muted-foreground sm:inline sm:mt-0 sm:ml-2">
+                  <span className="mt-0.5 block text-xs text-muted-foreground sm:ml-2 sm:mt-0 sm:inline">
                     {z.name}
                   </span>
                 </TableCell>
@@ -303,36 +377,38 @@ function PricingSection() {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2 rounded-lg border border-[#c5d4cc] bg-white p-5 text-sm">
-          <Row label="Sweep subtotal" value={formatUsd(t.sweepSubtotal)} />
-          <Row label="Mobilization" value={formatUsd(t.mobilization)} />
-          <Row
-            label="Debris haul & disposal"
-            value={formatUsd(t.debrisDisposal)}
-          />
-          <Separator className="my-2" />
-          <Row
-            label="Total proposed investment"
-            value={formatUsd(t.grandTotal)}
-            strong
-          />
-        </div>
-        <div className="rounded-lg border border-[#c5d4cc] bg-[#0f2e24] p-5 text-[#e8f2ec]">
-          <p className="text-xs uppercase tracking-wider text-[#7aa897]">
+        <Card className="border-[#d0dceb] bg-white p-5 shadow-none">
+          <div className="space-y-2 text-sm">
+            <Row label="Sweep subtotal" value={formatUsd(t.sweepSubtotal)} />
+            <Row label="Mobilization" value={formatUsd(t.mobilization)} />
+            <Row
+              label="Debris haul & disposal"
+              value={formatUsd(t.debrisDisposal)}
+            />
+            <Separator className="my-2" />
+            <Row
+              label="Total proposed investment"
+              value={formatUsd(t.grandTotal)}
+              strong
+            />
+          </div>
+        </Card>
+        <Card className="border-[#1a6fc4] bg-[#0a1628] p-5 text-white shadow-none">
+          <p className="text-[11px] uppercase tracking-wider text-[#8ba3c4]">
             Summary
           </p>
           <p className="mt-2 font-display text-3xl tabular-nums">
             {formatUsd(t.grandTotal)}
           </p>
-          <p className="mt-2 text-sm text-[#9ec9b8]">
+          <p className="mt-2 text-sm text-[#9eb4d0]">
             {formatMiles(t.centerlineMiles)} centerline ·{" "}
             {formatFeet(t.linearFeet)} · {t.curbMiles.toFixed(1)} curb-miles ·{" "}
             {ZONES.length} zones south of Hwy 278
           </p>
-        </div>
+        </Card>
       </div>
     </section>
   );
@@ -349,11 +425,11 @@ function Row({
 }) {
   return (
     <div className="flex justify-between gap-4">
-      <span className={strong ? "font-semibold text-[#0f2e24]" : "text-[#4a5c54]"}>
+      <span className={strong ? "font-semibold text-[#0a1628]" : "text-[#64748b]"}>
         {label}
       </span>
       <span
-        className={`tabular-nums ${strong ? "font-semibold text-[#0f2e24]" : ""}`}
+        className={`tabular-nums ${strong ? "font-semibold text-[#0a1628]" : ""}`}
       >
         {value}
       </span>
@@ -363,28 +439,26 @@ function Row({
 
 function MethodologySection() {
   return (
-    <section className="scroll-mt-8 py-16 sm:py-20" id="methodology">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5a7a6c]">
-        How we measured
-      </p>
-      <h2 className="mt-2 font-display text-3xl text-[#0f2e24] sm:text-4xl">
+    <section className="scroll-mt-10" id="methodology">
+      <SectionEyebrow>Measurement</SectionEyebrow>
+      <h2 className="mt-2 font-display text-3xl text-[#0a1628] sm:text-4xl">
         Scale, boundary, and street length
       </h2>
-      <div className="mt-8 grid gap-8 sm:grid-cols-3">
-        <Metric
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <InfoCard
           title="Map scale"
           body={`Source screenshot scale bar = ${METHODOLOGY.scaleBarFeet.toLocaleString()} ft. Used to size the work map and cross-check cluster footprints (~${METHODOLOGY.mapWidthMilesApprox} mi east–west × ~${METHODOLOGY.mapDepthMilesApprox} mi north–south south of 278).`}
         />
-        <Metric
+        <InfoCard
           title="Published inventory"
           body={`Association reporting cites ~${METHODOLOGY.communityRoadMilesPublished} miles of internal Sun City roads. This proposal uses ${(METHODOLOGY.southOf278Share * 100).toFixed(0)}% of that network for streets south of Hwy 278 inside the orange boundary → ${formatMiles(t.centerlineMiles)}.`}
         />
-        <Metric
+        <InfoCard
           title="Zone split"
           body="White / light residential fabric = dense curb miles (Zones A, B, D, E). Green golf and wooded fills = fewer, longer collectors (Zone C). Named spines priced separately (Zone F)."
         />
       </div>
-      <ol className="mt-10 list-decimal space-y-2 pl-5 text-sm text-[#3d5248]">
+      <ol className="mt-8 list-decimal space-y-2 rounded-lg border border-[#d0dceb] bg-white p-5 pl-10 text-sm text-[#475569]">
         {METHODOLOGY.notes.map((n) => (
           <li key={n}>{n}</li>
         ))}
@@ -393,54 +467,47 @@ function MethodologySection() {
   );
 }
 
-function Metric({ title, body }: { title: string; body: string }) {
-  return (
-    <div>
-      <h3 className="font-display text-xl text-[#0f2e24]">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-[#3d5248]">{body}</p>
-    </div>
-  );
-}
-
 function ScheduleSection() {
   return (
-    <section className="scroll-mt-8 py-16 sm:py-20" id="schedule">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5a7a6c]">
-        Field plan
-      </p>
-      <h2 className="mt-2 font-display text-3xl text-[#0f2e24] sm:text-4xl">
+    <section className="scroll-mt-10" id="schedule">
+      <SectionEyebrow>Field plan</SectionEyebrow>
+      <h2 className="mt-2 font-display text-3xl text-[#0a1628] sm:text-4xl">
         Suggested sequence
       </h2>
-      <ol className="mt-8 space-y-6">
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
         {[
           {
             day: "Day 1",
-            title: "West & central-west residential",
+            title: "West & central-west",
             detail: "Zones A–B — densest street fabric, early start for quiet courts.",
           },
           {
             day: "Day 2",
-            title: "Golf corridor + Del Webb east",
+            title: "Golf + Del Webb east",
             detail: "Zones C–D — Hidden Cypress collectors, then central-east neighborhoods.",
           },
           {
             day: "Day 3",
-            title: "Southeast + primary collectors",
+            title: "Southeast + collectors",
             detail: "Zones E–F — Okatie-edge streets, then Sun City / Del Webb spines and punch-list.",
           },
         ].map((step) => (
-          <li key={step.day} className="flex gap-4 sm:gap-6">
-            <span className="w-16 shrink-0 font-display text-lg text-[#0d7a6f]">
-              {step.day}
-            </span>
-            <div>
-              <p className="font-medium text-[#0f2e24]">{step.title}</p>
-              <p className="mt-1 text-sm text-[#3d5248]">{step.detail}</p>
-            </div>
-          </li>
+          <Card key={step.day} className="border-[#d0dceb] bg-white shadow-none">
+            <CardHeader className="pb-2 pt-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#1a6fc4]">
+                {step.day}
+              </p>
+              <CardTitle className="font-display text-xl text-[#0a1628]">
+                {step.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pb-4 text-sm text-[#475569]">
+              {step.detail}
+            </CardContent>
+          </Card>
         ))}
-      </ol>
-      <p className="mt-8 text-sm text-[#5a7a6c]">
+      </div>
+      <p className="mt-6 text-sm text-[#64748b]">
         Schedule assumes weekday daytime windows coordinated with association
         security and gate access. Weather delays shift the sequence without
         changing zone pricing.
@@ -451,42 +518,75 @@ function ScheduleSection() {
 
 function TermsSection() {
   return (
-    <section className="scroll-mt-8 border-t border-[#c5d4cc] py-16 sm:py-20" id="terms">
-      <h2 className="font-display text-2xl text-[#0f2e24]">Proposal notes</h2>
-      <ul className="mt-4 space-y-2 text-sm text-[#3d5248]">
-        <li>
-          This document is a demonstration proposal built from the attached Google
-          Maps community screenshot for Carolina Sweep Environmental.
-        </li>
-        <li>
-          Street lengths are engineering estimates from published road inventory
-          and scale-calibrated map apportionment — not a surveyed CAD takeoff.
-          Final contract mileage can be reconciled with association GIS or a joint
-          ride-along.
-        </li>
-        <li>
-          Quote valid through {COMPANY.validThrough}. Payment: 40% mobilization,
-          balance on completion and zone photo log.
-        </li>
-        <li>
-          Exclusions: private driveways, golf cart paths, parking lots not on the
-          association street inventory, and work north of Highway 278.
-        </li>
-      </ul>
+    <section className="scroll-mt-10" id="terms">
+      <SectionEyebrow>Proposal notes</SectionEyebrow>
+      <h2 className="mt-2 font-display text-2xl text-[#0a1628]">Terms & caveats</h2>
+      <Card className="mt-6 border-[#d0dceb] bg-white p-5 shadow-none">
+        <ul className="space-y-3 text-sm text-[#475569]">
+          <li>
+            Street lengths are engineering estimates from published road inventory
+            and scale-calibrated map apportionment — not a surveyed CAD takeoff.
+            Final contract mileage can be reconciled with association GIS or a joint
+            ride-along.
+          </li>
+          <li>
+            Quote valid through {COMPANY.validThrough}. Payment: 40% mobilization,
+            balance on completion and zone photo log.
+          </li>
+          <li>
+            Exclusions: private driveways, golf cart paths, parking lots not on the
+            association street inventory, and work north of Highway 278.
+          </li>
+          <li>
+            Demo proposal for capability review — built from the attached Google Maps
+            community screenshot for {COMPANY.name}.
+          </li>
+        </ul>
+      </Card>
     </section>
+  );
+}
+
+function SectionEyebrow({ children }: { children: ReactNode }) {
+  return (
+    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1a6fc4]">
+      {children}
+    </p>
   );
 }
 
 function Footer() {
   return (
-    <footer className="border-t border-[#1a4f42] bg-[#0a221c] px-4 py-10 text-center text-sm text-[#7aa897]">
-      <p className="font-display text-lg text-[#e8f2ec]">
-        Carolina Sweep Environmental
-      </p>
-      <p className="mt-1">{COMPANY.tagline}</p>
-      <p className="mt-4 text-xs">
-        {COMPANY.proposalId} · {COMPANY.location} · Demo proposal for capability
-        review
+    <footer className="border-t border-[#1a2d4a] bg-[#0a1628] px-4 py-10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="flex items-center gap-4">
+          <Image
+            src="/brand/logo-mark.png"
+            alt=""
+            width={120}
+            height={79}
+            className="h-10 w-auto opacity-90"
+          />
+          <div>
+            <p className="font-display text-lg text-white">{COMPANY.name}</p>
+            <p className="text-xs text-[#8ba3c4]">{COMPANY.tagline}</p>
+          </div>
+        </div>
+        <div className="text-sm text-[#8ba3c4]">
+          <p>{COMPANY.phone}</p>
+          <p>{COMPANY.email}</p>
+          <a
+            href={COMPANY.website}
+            className="text-[#6eb0f0] hover:underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            cleansweep-environmental.com
+          </a>
+        </div>
+      </div>
+      <p className="mx-auto mt-6 max-w-6xl text-center text-[11px] text-[#5a7394]">
+        {COMPANY.proposalId} · {COMPANY.location}
       </p>
     </footer>
   );

@@ -1,14 +1,16 @@
-# Carolina Sweep Environmental — Sun City Proposal
+# Clean Sweep Environmental — Sun City Proposal
 
-Demo proposal document and work map for **Carolina Sweep Environmental**: a full street-sweep job covering **Sun City Hilton Head** association streets **south of Highway 278**.
+Demo proposal document and interactive work map for **[Clean Sweep Environmental](https://www.cleansweep-environmental.com/)**: a full street-sweep covering **Sun City Hilton Head** association streets **south of Highway 278**.
 
-Built from the attached Google Maps community screenshot (orange community boundary + 2,000 ft scale bar).
+Built from the attached Google Maps community screenshot (orange community boundary + 2,000 ft scale bar), using CSE brand logo and colors from their live site.
 
 ## What’s included
 
+- Cover + sticky contents sidebar (document-style proposal layout)
 - Interactive work map with six priced zones (residential clusters, Hidden Cypress golf corridor, primary collectors)
-- Centerline mileage and linear-foot estimates calibrated to the map scale and published ~80-mile community road inventory
+- Centerline mileage and linear-foot estimates from map scale + published ~80-mile community road inventory
 - Line-item investment table, 3-day field sequence, and proposal notes
+- Contact: 843.563.1724 · info@cleansweep-environmental.com
 
 ## Run locally
 

@@ -8,28 +8,31 @@ export interface SweepZone {
   shortLabel: string;
   kind: ZoneKind;
   description: string;
-  /** Centerline miles estimated for proposed sweep. */
   centerlineMiles: number;
-  /** Rate per centerline mile (both gutters, one complete pass). */
   ratePerMile: number;
   color: string;
   fill: string;
 }
 
 export const COMPANY = {
-  name: "Carolina Sweep Environmental",
-  tagline: "Street sweeping · Stormwater compliance · Lowcountry communities",
+  name: "Clean Sweep Environmental",
+  shortName: "CSE",
+  tagline: "Street sweeping · Vac truck · Hydro excavation · Stormwater",
   proposalId: "CSE-SCHH-2026-001",
   preparedFor: "Sun City Hilton Head Community Association",
   jobTitle: "Full Community Street Sweep — South of Highway 278",
   location: "Okatie / Bluffton, South Carolina",
   validThrough: "November 30, 2026",
+  phone: "843.563.1724",
+  email: "info@cleansweep-environmental.com",
+  website: "https://www.cleansweep-environmental.com/",
+  about:
+    "Clean Sweep Environmental was created to be an all-in-one service company. We provide street sweeping, vac truck services, hydro excavation, and storm water maintenance — making managing your property or project easier and more efficient.",
 } as const;
 
 export const METHODOLOGY = {
   scaleBarFeet: 2000,
   communityRoadMilesPublished: 80,
-  /** Share of internal street network south of Hwy 278, from map apportionment. */
   southOf278Share: 0.78,
   mapWidthMilesApprox: 2.8,
   mapDepthMilesApprox: 2.0,
@@ -42,7 +45,6 @@ export const METHODOLOGY = {
   ],
 } as const;
 
-/** Rates: commercial HOA one-time sweep (SC / Southeast). */
 export const RATES = {
   residential: 172,
   golf: 148,
@@ -51,6 +53,7 @@ export const RATES = {
   debrisDisposal: 1200,
 } as const;
 
+/** Brand blue from CSE logo (~#2070D0), with supporting zone palette. */
 export const ZONES: SweepZone[] = [
   {
     id: "west-residential",
@@ -61,8 +64,8 @@ export const ZONES: SweepZone[] = [
       "Dense cul-de-sac and loop streets west of Sun City Blvd, including neighborhoods near Red Dam Rd and the western community gate.",
     centerlineMiles: 11.2,
     ratePerMile: RATES.residential,
-    color: "#0d7a6f",
-    fill: "rgba(13, 122, 111, 0.35)",
+    color: "#1a6fc4",
+    fill: "rgba(26, 111, 196, 0.28)",
   },
   {
     id: "central-west",
@@ -73,8 +76,8 @@ export const ZONES: SweepZone[] = [
       "Highest street density south of 278 — white-block residential fabric between Sun City Blvd and the Hidden Cypress golf edge.",
     centerlineMiles: 14.8,
     ratePerMile: RATES.residential,
-    color: "#1a8f82",
-    fill: "rgba(26, 143, 130, 0.38)",
+    color: "#2080e0",
+    fill: "rgba(32, 128, 224, 0.3)",
   },
   {
     id: "hidden-cypress",
@@ -85,8 +88,8 @@ export const ZONES: SweepZone[] = [
       "Lower-density collector and perimeter roads threading green golf / wooded fills around Hidden Cypress Golf Club. Fewer streets, longer runs.",
     centerlineMiles: 6.4,
     ratePerMile: RATES.golf,
-    color: "#5a8f3c",
-    fill: "rgba(90, 143, 60, 0.4)",
+    color: "#3d9a5c",
+    fill: "rgba(61, 154, 92, 0.32)",
   },
   {
     id: "del-webb-east",
@@ -97,8 +100,8 @@ export const ZONES: SweepZone[] = [
       "Residential street network along and east of Del Webb Blvd — loops, courts, and connectors in the central-east white blocks.",
     centerlineMiles: 13.6,
     ratePerMile: RATES.residential,
-    color: "#0e6b8a",
-    fill: "rgba(14, 107, 138, 0.36)",
+    color: "#0d5cad",
+    fill: "rgba(13, 92, 173, 0.28)",
   },
   {
     id: "southeast",
@@ -109,8 +112,8 @@ export const ZONES: SweepZone[] = [
       "Southern and southeastern residential pockets approaching Hwy 170 / Okatie Parkway, inside the orange community boundary.",
     centerlineMiles: 10.2,
     ratePerMile: RATES.residential,
-    color: "#2b6e9e",
-    fill: "rgba(43, 110, 158, 0.36)",
+    color: "#3b82c4",
+    fill: "rgba(59, 130, 196, 0.28)",
   },
   {
     id: "arterials",
@@ -121,8 +124,8 @@ export const ZONES: SweepZone[] = [
       "Sun City Blvd, Del Webb Blvd spines, and other multi-lane collectors that link neighborhood clusters (excluded from residential zone totals).",
     centerlineMiles: 6.2,
     ratePerMile: RATES.arterial,
-    color: "#c45f1a",
-    fill: "rgba(196, 95, 26, 0.4)",
+    color: "#e07a28",
+    fill: "rgba(224, 122, 40, 0.35)",
   },
 ];
 

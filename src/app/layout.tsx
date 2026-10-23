@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
-import { Figtree, Syne } from "next/font/google";
+import { Outfit, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
-const figtree = Figtree({
-  variable: "--font-figtree",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
 });
 
-const syne = Syne({
-  variable: "--font-syne",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Carolina Sweep Environmental — Sun City Street Sweep Proposal",
+  title: "Clean Sweep Environmental — Sun City Street Sweep Proposal",
   description:
-    "Street sweeping proposal for Sun City Hilton Head south of Highway 278, with work map and zone pricing.",
+    "Street sweeping proposal for Sun City Hilton Head south of Highway 278, with work map and zone pricing from Clean Sweep Environmental.",
 };
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${figtree.variable} ${syne.variable} font-sans antialiased`}
+        className={`${sourceSans.variable} ${outfit.variable} font-sans antialiased`}
       >
         {children}
       </body>

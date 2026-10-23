@@ -339,14 +339,14 @@ export function WorkMap() {
       {/* Active zone tooltip */}
       <div
         className={cn(
-          "mt-4 rounded-md border border-[#c5d4cc] bg-white/90 px-4 py-3 transition-opacity",
+          "mt-4 rounded-md border border-[#d0dceb] bg-[#f8fafc] px-4 py-3 transition-opacity",
           active ? "opacity-100" : "opacity-70"
         )}
       >
         {active && zoneById[active] ? (
           <ActiveZoneDetail zone={zoneById[active]} />
         ) : (
-          <p className="text-sm text-[#4a5c54]">
+          <p className="text-sm text-[#64748b]">
             Hover or tap a lettered zone on the map to see street length and
             proposed cost for that area.
           </p>
@@ -402,18 +402,18 @@ function ActiveZoneDetail({ zone }: { zone: SweepZone }) {
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-3">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#6b757e]">
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#64748b]">
           {zone.shortLabel}
         </p>
-        <p className="font-display text-lg text-[#0f2e24]">{zone.name}</p>
-        <p className="mt-1 max-w-xl text-sm text-[#4a5c54]">{zone.description}</p>
+        <p className="font-display text-lg text-[#0a1628]">{zone.name}</p>
+        <p className="mt-1 max-w-xl text-sm text-[#475569]">{zone.description}</p>
       </div>
       <div className="text-right text-sm">
-        <p className="tabular-nums text-[#0f2e24]">
+        <p className="tabular-nums text-[#0a1628]">
           <span className="font-semibold">{zone.centerlineMiles.toFixed(1)}</span>{" "}
           centerline mi · {feet.toLocaleString()} ft
         </p>
-        <p className="tabular-nums text-[#0f2e24]">
+        <p className="tabular-nums text-[#0a1628]">
           ${zone.ratePerMile}/mi →{" "}
           <span className="font-semibold">
             {cost.toLocaleString("en-US", {
